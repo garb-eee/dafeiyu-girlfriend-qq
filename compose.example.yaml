@@ -1,0 +1,85 @@
+# ---------------------------------------------------------------------------
+# 大肥鱼女朋友 · QQ AI 伴侣 —— 示例编排
+#
+# 三星电脑已采用 compose.yaml 实机部署；本文件保留为无凭证模板。
+# 使用方式：docker compose -f compose.example.yaml up -d
+#
+# 纪律：
+#   1. 所有端口只绑 127.0.0.1，永不省略前缀（省略 = 0.0.0.0 = 公网暴露）。
+#   2. 端口值只来自桌面/文档约定的 28765 / 26099 / 23001 / 28767。
+#   3. 卷名统一 dfyqq- 前缀，不复用旧项目卷，也不挂载任何宿主个人目录。
+#   4. 镜像必须钉版（digest 或精确 tag），升级前先记录旧值。
+#   5. 本文件不包含、也不应包含任何真实 Token / Key / QQ 号。
+# ---------------------------------------------------------------------------
+
+name: dafeiyu-girlfriend-qq
+
+services:
+  # QQ 协议端：MODE=astrbot，通过共享数据卷生成反向 WS 配置。
+  napcat:
+    image: mlikiowa/napcat-docker:v4.18.37   # 待 S1 时按实测版本钉 digest
+    container_name: dfyqq-napcat
+    hostname: dfyqq-napcat                    # 固定 hostname，减少"新设备"判定
+    restart: unless-stopped
+    init: true
+    mem_limit: 2g
+    cpus: 2
+    pids_limit: 512
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Asia/Seoul
+      - NAPCAT_UID=1000
+      - NAPCAT_GID=1000
+      - MODE=astrbot
+    ports:
+      - "127.0.0.1:26099:6099"                # NapCat WebUI（扫码 / 连接设置）
+    volumes:
+      - dfyqq-napcat-config:/app/napcat/config
+      - dfyqq-qq-data:/app/.config/QQ
+      - dfyqq-astrbot-data:/AstrBot/data
+    tmpfs:
+      - /app/.cache:size=256m                 # 可写缓存，避免只读根导致崩溃
+    logging:
+      driver: local
+      options:
+        max-size: "1m"
+        max-file: "2"
+
+  # 应用引擎：AstrBot 是 OneBot v11 反向 WS 服务端，容器内监听 6199。
+  astrbot:
+    image: soulter/astrbot:v4.29.0            # 待 S1 时按实测版本钉 digest
+    container_name: dfyqq-astrbot
+    hostname: dfyqq-astrbot
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - "127.0.0.1:28765:6185"                # AstrBot WebUI
+    expose:
+      - "6199"
+    volumes:
+      - dfyqq-astrbot-data:/AstrBot/data
+      - ./persona:/AstrBot/data/dfyqq/persona:ro     # 人格文件，只读挂载
+      - ./state:/AstrBot/data/dfyqq/state            # 关系阶段与审计（可写）
+    logging:
+      driver: local
+      options:
+        max-size: "1m"
+        max-file: "2"
+
+volumes:
+  dfyqq-napcat-config:
+    name: dfyqq-napcat-config
+  dfyqq-qq-data:
+    name: dfyqq-qq-data
+  dfyqq-astrbot-data:
+    name: dfyqq-astrbot-data
+
+# 说明（待 S1 验证后修正）：
+#   - NapCat WebUI 与 AstrBot WebUI 只发布到宿主回环地址。
+#   - OneBot 6199 只在 Compose 私有网络内暴露，不发布到 Windows 宿主。
+#   - 模型、人格启用、白名单和主动联系均在 AstrBot WebUI 验收后配置。

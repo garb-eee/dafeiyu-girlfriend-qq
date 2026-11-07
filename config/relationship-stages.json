@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "default_stage": "stranger",
+  "lockable": true,
+  "stages": {
+    "stranger": {
+      "order": 0,
+      "enter": { "initial": true },
+      "allow": { "polite_short_replies": true, "nicknames": false, "pet_names": false, "clingy": false, "jealousy": false, "proactive_contact": false },
+      "language": { "korean_register": "formal" }
+    },
+    "familiar": {
+      "order": 1,
+      "enter": { "min_rounds": 60, "min_distinct_days": 3, "min_memory_writes": 5 },
+      "allow": { "polite_short_replies": true, "nicknames": true, "pet_names": false, "clingy": false, "jealousy": false, "proactive_contact": false },
+      "language": { "korean_register": "formal" }
+    },
+    "close": {
+      "order": 2,
+      "enter": { "min_rounds": 300, "min_distinct_days": 14, "min_days_without_violation": 7 },
+      "allow": { "polite_short_replies": true, "nicknames": true, "pet_names": true, "clingy": "mild", "jealousy": "mild", "proactive_contact": "user_opt_in" },
+      "language": { "korean_register": "formal_or_banmal" }
+    }
+  }
+}

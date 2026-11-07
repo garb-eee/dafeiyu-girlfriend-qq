@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "rules": {
+    "zh": { "match": "simplified_chinese", "reply_language": "zh", "punctuation": "simplified_chinese", "sentence_min": 1, "sentence_max": 3 },
+    "ko": { "match": "hangul", "reply_language": "ko", "korean_register_by_stage": { "stranger": "formal", "familiar": "formal", "close": "formal_or_banmal" } },
+    "ja": { "match": "kana_or_kanji_japanese", "reply_language": "ja_short_only", "max_kana_chars": 20, "input_short_kana": 8, "allowed_usage": ["greeting", "exclamation", "politeness"] }
+  },
+  "mixed_input": "follow_main_clause_language",
+  "guard": { "max_kana_chars_when_input_not_ja": 0 }
+}

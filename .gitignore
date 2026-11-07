@@ -1,0 +1,8 @@
+.env.runtime
+backups/
+*.bak
+*.log
+__pycache__/
+.pytest_cache/
+vendor/
+scripts/dsh-*.json

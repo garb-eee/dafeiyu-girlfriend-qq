@@ -1,0 +1,97 @@
+name: dafeiyu-girlfriend-qq
+
+services:
+  ollama:
+    image: ollama/ollama@sha256:0e59999e0e8f9fd4e704bd788a89b7e4cad399367fb1365f8c102ac662288761
+    container_name: dfyqq-ollama
+    hostname: dfyqq-ollama
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - OLLAMA_KEEP_ALIVE=5m
+      - OLLAMA_NUM_PARALLEL=1
+    expose:
+      - "11434"
+    volumes:
+      - dfyqq-ollama-data:/root/.ollama
+    networks:
+      - dfyqq-network
+    mem_limit: 3g
+    cpus: 4.0
+    logging:
+      driver: local
+      options:
+        max-size: "2m"
+        max-file: "3"
+
+  astrbot:
+    image: soulter/astrbot:v4.29.0
+    container_name: dfyqq-astrbot
+    hostname: dfyqq-astrbot
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - "127.0.0.1:28765:6185"
+    expose:
+      - "6199"
+    volumes:
+      - dfyqq-astrbot-data:/AstrBot/data
+      - ./persona:/AstrBot/data/dfyqq/persona:ro
+      - ./state:/AstrBot/data/dfyqq/state
+    networks:
+      - dfyqq-network
+    logging:
+      driver: local
+      options:
+        max-size: "2m"
+        max-file: "3"
+
+  napcat:
+    image: mlikiowa/napcat-docker:v4.18.37
+    container_name: dfyqq-napcat
+    hostname: dfyqq-napcat
+    restart: unless-stopped
+    init: true
+    depends_on:
+      - astrbot
+    environment:
+      - TZ=Asia/Seoul
+      - NAPCAT_UID=1000
+      - NAPCAT_GID=1000
+      - MODE=astrbot
+    env_file:
+      - .env.runtime
+    ports:
+      - "127.0.0.1:26099:6099"
+    volumes:
+      - dfyqq-astrbot-data:/AstrBot/data
+      - dfyqq-napcat-config:/app/napcat/config
+      - dfyqq-qq-data:/app/.config/QQ
+    networks:
+      - dfyqq-network
+    logging:
+      driver: local
+      options:
+        max-size: "2m"
+        max-file: "3"
+
+networks:
+  dfyqq-network:
+    name: dfyqq-network
+    driver: bridge
+
+volumes:
+  dfyqq-astrbot-data:
+    name: dfyqq-astrbot-data
+  dfyqq-napcat-config:
+    name: dfyqq-napcat-config
+  dfyqq-qq-data:
+    name: dfyqq-qq-data
+  dfyqq-ollama-data:
+    name: dfyqq-ollama-data
