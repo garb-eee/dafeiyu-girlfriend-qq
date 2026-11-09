@@ -1,5 +1,7 @@
 # 大肥鱼女朋友 · QQ AI 伴侣（独立项目）
 
+双机运维采用 Tailscale + Windows OpenSSH 的双向公钥方案；安装、固定指纹测试与撤销流程见 [`docs/MUTUAL_SSH_CONTROL.md`](docs/MUTUAL_SSH_CONTROL.md)。任何 SSH 私钥都不得进入本仓库。
+
 > 一个全新、独立、与七海项目和旧 `dafeiyu-lab` 无关的项目。
 > 当前目标：先在三星 Windows 电脑稳定运行，再通过 Tailscale SSH 迁移到用户选定的另一台电脑。
 > 实施：DSH；监督：Codex。
