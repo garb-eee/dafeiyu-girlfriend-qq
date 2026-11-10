@@ -1,0 +1,43 @@
+{
+  "enabled": {
+    "description": "启用关系阶段注入",
+    "type": "bool",
+    "default": true
+  },
+  "owner_id": {
+    "description": "主人 QQ 号；留空时自动使用 AstrBot 的第一个管理员 ID",
+    "type": "string",
+    "default": ""
+  },
+  "initial_stage": {
+    "description": "首次安装时的关系阶段",
+    "type": "string",
+    "options": ["stranger", "familiar", "close"],
+    "default": "close"
+  },
+  "auto_progress": {
+    "description": "按互动轮次与跨天数自动推进阶段",
+    "type": "bool",
+    "default": false
+  },
+  "familiar_turns": {
+    "description": "自动进入 familiar 所需主人互动轮次",
+    "type": "int",
+    "default": 60
+  },
+  "familiar_days": {
+    "description": "自动进入 familiar 所需跨天数",
+    "type": "int",
+    "default": 3
+  },
+  "close_turns": {
+    "description": "自动进入 close 所需主人互动轮次",
+    "type": "int",
+    "default": 300
+  },
+  "close_days": {
+    "description": "自动进入 close 所需跨天数",
+    "type": "int",
+    "default": 14
+  }
+}

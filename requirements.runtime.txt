@@ -1,0 +1,5 @@
+# Dependencies missing from soulter/astrbot:v4.29.0 that are required by
+# LivingMemory, Group Chat Plus, and the built-in Edge TTS provider.
+networkx==3.7
+argon2-cffi==25.1.0
+edge-tts==7.3.1

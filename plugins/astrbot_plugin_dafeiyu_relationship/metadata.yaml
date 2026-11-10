@@ -1,0 +1,8 @@
+name: astrbot_plugin_dafeiyu_relationship
+display_name: 大肥鱼关系阶段
+author: dafeiyu-girlfriend-qq
+version: 1.0.0
+desc: 为主人私聊与群聊注入可持久化的 stranger/familiar/close 关系阶段，不保存聊天正文。
+astrbot_version: ">=4.24.0,<5"
+support_platforms:
+  - aiocqhttp

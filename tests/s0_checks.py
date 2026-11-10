@@ -88,7 +88,7 @@ def main():
     check("人格含唯一一对 system_prompt 标记", not split_errors, str(split_errors))
     check("system_prompt 正文非空", len(body) > 1500, f"{len(body)} 字符")
     for field in ["name: 大肥鱼", "persona_id: dafeiyu-girlfriend", "default_stage: stranger",
-                  "ai_disclosure:", "romance_safe: true", "version: 2",
+                  "ai_disclosure:", "romance_safe: true", "version: 3",
                   "stage_source: config/relationship-stages.json",
                   "language_source: config/language-policy.json"]:
         check(f"人格必需字段 {field.split(':')[0]}", field in persona)
@@ -131,8 +131,7 @@ def main():
 
     # 4) 未提供的能力：名词必须被明确划为"没有"，且不得以第一人称承诺
     unavailable = ["逛 B 站", "刷 B 站", "操作 App", "控制手机", "截图", "看屏幕",
-                   "把文字合成为语音", "发送图片", "表情包", "定时任务", "未来任务", "主动发消息",
-                   "联网搜索"]
+                   "语音转写", "发送图片", "定时任务", "未来任务", "联网搜索"]
     capability_line = next((ln for ln in body.splitlines() if ln.startswith("以下能力目前没有提供")), "")
     for term in unavailable:
         check(f"明示未提供能力：{term}", term in capability_line)
@@ -148,7 +147,9 @@ def main():
           find_capability_mentions(body, ["刷了 B 站", "看过视频", "刷过 B 站"]) == [])
     check("不把已执行结果说成已完成",
           "只有执行结果确认成功" in body and "不能用角色台词冒充完成" in body)
-    check("语音能力如实说明", "如果本轮没有语音工具，就直接说明现在只能打字" in body)
+    check("语音输出能力如实说明", "语音输出已经开启" in body and "由平台设置决定" in body)
+    check("QQ 原生表情能力已启用", "当前 QQ 表情转换插件已启用" in body)
+    check("主动联系能力受限启用", "克制的主动联系" in body and "未回复上限" in body)
 
     # 5) 文本健壮性：AstrBot 会把 system prompt 当 Jinja 模板渲染，也不能被命令前缀切走
     jinja_hits = [m for m in ("{{", "{%", "{#") if m in body]

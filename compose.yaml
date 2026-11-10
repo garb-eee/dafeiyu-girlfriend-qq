@@ -27,7 +27,10 @@ services:
         max-file: "3"
 
   astrbot:
-    image: soulter/astrbot:v4.29.0
+    build:
+      context: .
+      dockerfile: docker/astrbot-plugins.Dockerfile
+    image: dfyqq-astrbot:v4.29.0-plugins
     container_name: dfyqq-astrbot
     hostname: dfyqq-astrbot
     restart: unless-stopped
@@ -43,6 +46,7 @@ services:
     volumes:
       - dfyqq-astrbot-data:/AstrBot/data
       - ./persona:/AstrBot/data/dfyqq/persona:ro
+      - ./scripts:/AstrBot/data/dfyqq/scripts:ro
       - ./state:/AstrBot/data/dfyqq/state
     networks:
       - dfyqq-network
