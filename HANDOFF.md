@@ -1,6 +1,6 @@
 # 大肥鱼 QQ 项目 · Codex 交接说明
 
-更新时间：2026-11-08（Asia/Seoul）
+更新时间：2026-11-10 11:35（Asia/Seoul）
 
 ## 目标与边界
 
@@ -17,13 +17,21 @@
 - NapCat：`mlikiowa/napcat-docker:v4.18.37`，容器 `dfyqq-napcat`。
 - 宿主端口仅绑定回环：AstrBot `127.0.0.1:28765`，NapCat `127.0.0.1:26099`。
 - OneBot 使用 Docker 私网反向 WebSocket：`ws://astrbot:6199/ws`，6199 不映射宿主。
-- QQ 已扫码登录，AstrBot 日志出现 `aiocqhttp(OneBot v11) 适配器已连接`。
+- QQ 曾完成扫码登录，AstrBot 历史日志出现 `aiocqhttp(OneBot v11) 适配器已连接`；这条是历史验收证据，不代表当前仍在线。
 - DSFlash `deepseek-v4.1-flash` 已完成真实 API 请求并被 AstrBot 设为默认聊天模型。
 - `dafeiyu-girlfriend` 人格已写入 AstrBot personas 表，重启后检查一致。
 - 已真实收到一条主人私聊，并由 DSFlash 生成、大肥鱼人格回复、NapCat 实际发送成功。
 - 白名单已重新锁定为唯一主人 QQ；本文不记录号码。
 - 主动消息未安装、未开启；不会主动联系。
 - 语音未安装、未开启。
+
+## 2026-11-10 当前实测状态
+
+- `dfyqq-astrbot` 与 `dfyqq-napcat` 容器都在运行，最近一次启动后重启计数均为 0；管理端口仍只绑定回环地址。
+- **QQ 当前未登录。** NapCat 日志持续出现 `Login Error, ErrType: 1, ErrCode: 3`，并约每两分钟重新生成扫码二维码。
+- 因 QQ 未登录，当前不能把“容器运行”解读为“OneBot 可收发”；恢复服务需要用户本人扫描 NapCat 当前二维码并在手机 QQ 授权。
+- AstrBot 的历史日志仍能证明 OneBot、默认 DSFlash provider、人格与白名单曾成功加载，但扫码恢复后必须重新做一次真实收发验收。
+- `dfyqq-ollama` 仍为停止状态；LivingMemory 工作保持暂停。
 
 ## 暂停状态
 
@@ -50,20 +58,21 @@
   - `dfyqq-qq-data`
   - `dfyqq-ollama-data`
 - 容器：
-  - `dfyqq-astrbot`：运行
-  - `dfyqq-napcat`：运行
+  - `dfyqq-astrbot`：运行，重启计数 0
+  - `dfyqq-napcat`：运行，重启计数 0；QQ 登录态失效，等待扫码
   - `dfyqq-ollama`：停止
 
 ## 迁移目标现状
 
 - Tailscale 中在线候选：`laptop-r1mnf5n3`。
-- Tailscale 直连已验证，约 5 ms。
-- 目标机 SSH 22 端口尚未开放，因此尚未开始传输。
+- Tailscale 当前在线且直连已建立。
+- 目标机 Windows OpenSSH 已运行，SSH 22 端口可达；ED25519 主机指纹已与源机固定记录核对一致。
+- 使用迁移专用密钥做只读 `whoami; hostname` 测试时被目标机拒绝为 `Permission denied (publickey,...)`，说明迁移公钥尚未写入目标机管理员授权文件，因此尚未开始传输。
 - 当前源实例仍在三星电脑运行。
 - 迁移专用 SSH 公钥已在源电脑创建；私钥只留在源电脑。
 
-目标机需要用户先完成：启用 Windows OpenSSH Server、把迁移公钥写入
-`C:\ProgramData\ssh\administrators_authorized_keys`、确认 Docker Desktop/Compose/WSL 可用、提供目标 Windows 用户名。
+目标机已知管理员用户名为 `sanalover`。下一步只需把源机迁移公钥写入
+`C:\ProgramData\ssh\administrators_authorized_keys` 并修正 ACL；公钥认证通过后，才能只读确认目标机的 Docker Desktop/Compose/WSL、磁盘和端口状态。
 
 ## 迁移时的硬性顺序
 
@@ -99,8 +108,10 @@ python .\tests\s0_checks.py
 - `scripts/install_astrbot_provider_from_ccs.py`：从源机 CCS 安装 DSFlash，目标机不一定有 CCS；迁移时优先恢复 AstrBot 卷。
 - `scripts/set_astrbot_test_access.py`：首次识别主人后收紧白名单。
 - `tests/s0_checks.py`：离线约束检查。
-- `README.md`：仍含部分早期 5060 规划文字，不能当作最新运行状态；以本文和真实运行检查为准，后续需更新。
+- `README.md`：仍含部分早期 5060 规划文字；顶部状态已更新，但运行与迁移判断仍以本文和实时检查为准。
 
 ## 当前下一步
 
-等待用户在目标电脑开启 SSH 并提供目标用户名。SSH 可用后，由接手的 Codex 完成一致性备份、传输、恢复和真实验收。
+1. 用户在源机 NapCat WebUI 或本机二维码中重新扫码，恢复 QQ 登录；随后验证 OneBot 连接和一次真实收发。
+2. 在目标机授权源机迁移公钥并修正管理员公钥文件 ACL，再重跑固定指纹只读 SSH 测试。
+3. 两项都通过后，按上面的硬性顺序完成一致性备份、传输、恢复和目标机真实验收。

@@ -6,9 +6,9 @@
 > 当前目标：先在三星 Windows 电脑稳定运行，再通过 Tailscale SSH 迁移到用户选定的另一台电脑。
 > 实施：DSH；监督：Codex。
 >
-> **2026-11-08 状态：真实 QQ、OneBot、DSFlash、大肥鱼人格、唯一主人白名单和一次真实收发均已验证。主动联系、语音和 LivingMemory 尚未启用。最新接手状态与迁移顺序以 [`HANDOFF.md`](HANDOFF.md) 为准；下方保留的早期规划不代表全部已实现。**
+> **2026-11-10 状态：真实 QQ、OneBot、DSFlash、大肥鱼人格、唯一主人白名单和一次真实收发已有历史验收证据，但当前 NapCat 的 QQ 登录态已失效，正在等待用户重新扫码，因此现在不能收发。AstrBot 与 NapCat 容器仍运行且重启计数为 0；主动联系、语音和 LivingMemory 尚未启用。目标机已在线且 SSH 端口可达，但迁移公钥尚未获授权。最新实测状态与迁移顺序以 [`HANDOFF.md`](HANDOFF.md) 为准；下方保留的早期规划不代表全部已实现。**
 
-本仓库目录：`C:\Users\sanalover\Documents\Codex\2026-10-26\new-chat-2\work\dafeiyu-girlfriend-qq`
+本仓库目录：`C:\Users\sanalover\Documents\Codex\2026-10-26.__codex_migrated__\new-chat-2\work\dafeiyu-girlfriend-qq`
 （以下称"本项目目录"）。项目所有产出只能写在这里。
 
 ---
