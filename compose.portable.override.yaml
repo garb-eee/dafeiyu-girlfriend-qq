@@ -1,0 +1,4 @@
+services:
+  astrbot:
+    image: ghcr.io/garb-eee/dafeiyu-girlfriend-qq:latest
+    pull_policy: always

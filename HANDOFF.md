@@ -4,7 +4,7 @@
 
 ## 当前结论
 
-大肥鱼已在三星 Windows 主机上运行。AstrBot、NapCat、Ollama 三个容器均为运行状态，重启计数为 0；QQ 已登录，OneBot v11 已连接。真实 QQ 私聊收发已有历史验收证据。
+当前主运行方式已切换为 Windows 上的独立 DSH profile，不要求 Docker。稳定工作区是 `D:\DafeiyuGirlfriend\qqgf`；DeepSeek Harness 只在本机监听控制端口。旧 AstrBot、NapCat、Ollama 容器数据仍保留，可作为兼容部署方案，但 Docker Desktop 不再是当前大肥鱼的启动前提。
 
 仓库和回复中不得出现 API Key、NapCat Token、QQ 号、群号、二维码、SSH 私钥或真实聊天正文。不要在两台电脑同时启动同一 QQ 账号。
 
@@ -21,10 +21,31 @@
 | QQ 表情 | face convert 已加载 326 个映射 |
 | 语音输出 | Edge TTS 已配置；全局约 15% 概率同时发送文本和语音 |
 | 语音输入 | 未配置 ASR，不保证能听懂语音条 |
+| GitHub | DSH 插件已启用；仓库、PR、Issue、搜索和 REST GET，只读 |
 | 韩国公开资料 MCP | 默认启用；法律、判例、DART 与政府公开资料，只读 |
 | Naver / 中国 / 全球商品 MCP | 已固化进镜像；仅在本机凭据完整时启用 |
 
 所有社区插件均固定到具体 Git 提交，详见 `plugins.lock.json`。Python 运行依赖固化在 `requirements.runtime.txt` 和 `docker/astrbot-plugins.Dockerfile`，AstrBot 当前使用本地镜像 `dfyqq-astrbot:v4.29.0-plugins`。
+
+## 当前 DSH 虚拟空间
+
+- Profile：`%USERPROFILE%\.dsh\profiles\desktop`
+- 工作区：`D:\DafeiyuGirlfriend\qqgf`
+- GitHub 登录：本机 GitHub CLI / Windows Credential Manager，仓库不保存 Token
+- GitHub 默认仓库：`garb-eee/dafeiyu-girlfriend-qq`
+- GitHub 写操作和 clone：默认禁用
+
+安装器和边界说明见 [`dsh/README.md`](dsh/README.md)。
+
+## 跨设备容器镜像
+
+`.github/workflows/publish-ghcr.yml` 在主分支相关文件变化或手动触发时构建：
+
+```text
+ghcr.io/garb-eee/dafeiyu-girlfriend-qq:latest
+```
+
+目标设备使用 `compose.yaml` 与 `compose.portable.override.yaml` 拉取。私有 GHCR 包需要先用具有 `read:packages` 的凭据执行 `docker login ghcr.io`；也可以在 GitHub 包设置中把镜像改为公开。
 
 ## MCP 工具层
 

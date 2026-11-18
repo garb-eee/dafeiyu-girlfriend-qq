@@ -1,0 +1,24 @@
+{
+  "name": "dsh-github",
+  "version": "0.1.0",
+  "description": "GitHub control for DeepSeek Harness via the gh CLI: repos, PRs, issues, search, raw API, and confirmed writes.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "os": ["win32", "linux", "darwin"],
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
+
