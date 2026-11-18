@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "policy": "one-primary-source-per-domain",
+  "sources": {
+    "dfyqq-china-shopping": {
+      "scope": ["taobao", "jd", "pinduoduo"],
+      "actions": ["status", "search", "detail", "affiliate-link"],
+      "defaultEnabled": false,
+      "reason": "Enable only when at least one official-platform credential set is complete."
+    },
+    "dfyqq-naver-search": {
+      "scope": ["korea-shopping", "naver-cafe", "naver-blog", "korea-news", "korea-local"],
+      "actions": ["search"],
+      "defaultEnabled": false,
+      "reason": "Requires a Naver Developers client ID and secret."
+    },
+    "dfyqq-korea-public": {
+      "scope": ["korea-law", "korea-cases", "dart", "korea-public-data", "korea-trade", "korea-finance"],
+      "actions": ["search", "detail"],
+      "defaultEnabled": true,
+      "reason": "Remote read-only public-data MCP; never send private chat data or personal identifiers."
+    },
+    "dfyqq-global-shopping": {
+      "scope": ["us-shopping", "southeast-asia-shopping", "cross-border-price-comparison"],
+      "actions": ["search", "detail", "price-compare", "price-history"],
+      "defaultEnabled": false,
+      "reason": "Requires a separate BuyWhere API key."
+    }
+  },
+  "excluded": {
+    "browser-shopping-automation": "Not installed: duplicates search and can access carts, orders, account sessions or checkout.",
+    "seller-backoffice": "Not installed: this companion only needs read-only consumer research.",
+    "duplicate-marketplace-servers": "Not installed: each geographic or public-data domain has one primary source."
+  },
+  "safety": {
+    "readOnlyByDefault": true,
+    "allowCartOrderOrPayment": false,
+    "allowMockResultsInProduction": false,
+    "sendPrivateChatToRemoteServices": false,
+    "requireSourceLinksForPublicData": true
+  }
+}

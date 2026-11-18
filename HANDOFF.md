@@ -1,6 +1,6 @@
 # 大肥鱼 QQ 项目 · Codex 交接说明
 
-更新时间：2026-11-10（Asia/Seoul）
+更新时间：2026-11-18（Asia/Seoul）
 
 ## 当前结论
 
@@ -21,8 +21,21 @@
 | QQ 表情 | face convert 已加载 326 个映射 |
 | 语音输出 | Edge TTS 已配置；全局约 15% 概率同时发送文本和语音 |
 | 语音输入 | 未配置 ASR，不保证能听懂语音条 |
+| 韩国公开资料 MCP | 默认启用；法律、判例、DART 与政府公开资料，只读 |
+| Naver / 中国 / 全球商品 MCP | 已固化进镜像；仅在本机凭据完整时启用 |
 
 所有社区插件均固定到具体 Git 提交，详见 `plugins.lock.json`。Python 运行依赖固化在 `requirements.runtime.txt` 和 `docker/astrbot-plugins.Dockerfile`，AstrBot 当前使用本地镜像 `dfyqq-astrbot:v4.29.0-plugins`。
+
+## MCP 工具层
+
+统一工具层遵循“每个领域一个主来源”的路由，不把同类搜索服务器全部交给模型：
+
+- 韩国公共资料使用 `dfyqq-korea-public`。
+- 韩国购物、Cafe、Blog、News 与本地搜索使用 `dfyqq-naver-search`。
+- 淘宝、京东、拼多多使用 `dfyqq-china-shopping`。
+- 美国、东南亚与跨境商品比较使用 `dfyqq-global-shopping`。
+
+浏览器购物自动化、商家后台、购物车、订单和支付能力未接入。凭据只放本机忽略文件 `.env.mcp`；AstrBot 的 `mcp_server.json` 不保存密钥。安装与后续补 Key 的命令见 [`mcp/README.md`](mcp/README.md)。
 
 ## 当前策略
 
@@ -40,6 +53,7 @@ docker compose build astrbot
 docker compose up -d ollama astrbot napcat
 .\scripts\install_pinned_plugins.ps1
 docker exec dfyqq-astrbot python /AstrBot/data/dfyqq/scripts/configure_companion_runtime.py --group-id <目标群号>
+docker exec dfyqq-astrbot python /AstrBot/data/dfyqq/scripts/install_mcp_suite.py
 docker restart dfyqq-astrbot
 ```
 

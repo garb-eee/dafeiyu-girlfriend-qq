@@ -17,7 +17,7 @@ name: dafeiyu-girlfriend-qq
 services:
   # QQ 协议端：MODE=astrbot，通过共享数据卷生成反向 WS 配置。
   napcat:
-    image: mlikiowa/napcat-docker:v4.18.37   # 待 S1 时按实测版本钉 digest
+    image: mlikiowa/napcat-docker:v4.18.42   # v4.18.37 tag 已不可用
     container_name: dfyqq-napcat
     hostname: dfyqq-napcat                    # 固定 hostname，减少"新设备"判定
     restart: unless-stopped
@@ -57,6 +57,9 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Asia/Seoul
+    env_file:
+      - path: .env.mcp
+        required: false
     ports:
       - "127.0.0.1:28765:6185"                # AstrBot WebUI
     expose:

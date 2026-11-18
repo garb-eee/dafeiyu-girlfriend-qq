@@ -39,6 +39,9 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Asia/Seoul
+    env_file:
+      - path: .env.mcp
+        required: false
     ports:
       - "127.0.0.1:28765:6185"
     expose:
@@ -57,7 +60,7 @@ services:
         max-file: "3"
 
   napcat:
-    image: mlikiowa/napcat-docker:v4.18.37
+    image: mlikiowa/napcat-docker:v4.18.42
     container_name: dfyqq-napcat
     hostname: dfyqq-napcat
     restart: unless-stopped

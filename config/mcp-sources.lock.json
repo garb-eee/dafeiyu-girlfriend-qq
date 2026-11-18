@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-18",
+  "sources": {
+    "dfyqq-china-shopping": {
+      "repository": "https://github.com/EastMG/dsh-shopping-mcp",
+      "commit": "22190059ea1007050e2d0864e9afed3d05bd19c9",
+      "license": "MIT"
+    },
+    "dfyqq-naver-search": {
+      "repository": "https://github.com/uju777/mcp-server-naver-search",
+      "commit": "f5ae4b12ac24c023aa6d0841fed9867a88eb8501",
+      "license": "MIT"
+    },
+    "dfyqq-korea-public": {
+      "repository": "https://github.com/hjsh200219/korea-public-data-mcp",
+      "endpoint": "https://public-data.up.railway.app/mcp",
+      "license": "MIT"
+    },
+    "dfyqq-global-shopping": {
+      "repository": "https://github.com/BuyWhere/buywhere-mcp",
+      "npm": "@buywhere/mcp-server@0.4.0",
+      "license": "MIT"
+    }
+  }
+}

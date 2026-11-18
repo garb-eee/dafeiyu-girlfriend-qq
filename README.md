@@ -6,7 +6,7 @@
 > 当前目标：先在三星 Windows 电脑稳定运行，再通过 Tailscale SSH 迁移到用户选定的另一台电脑。
 > 实施：DSH；监督：Codex。
 >
-> **2026-11-10 状态：真实 QQ、OneBot、DSFlash 与大肥鱼人格均在线。唯一主人和一个目标群已受控开放；群聊可直接说话，无需 `/`。LivingMemory + 本地 `bge-m3`、克制主动联系、情绪/时间感知、QQ 表情转换、Edge TTS 语音输出和持久关系阶段均已安装并加载。AstrBot 使用仓库内可复现的定制镜像，三个容器运行且重启计数为 0。最新实测状态以 [`HANDOFF.md`](HANDOFF.md) 为准；下方早期规划仅保留为设计记录。**
+> **2026-11-18 状态：真实 QQ、OneBot、DSFlash 与大肥鱼人格均在线。唯一主人和一个目标群已受控开放；群聊可直接说话，无需 `/`。LivingMemory + 本地 `bge-m3`、克制主动联系、情绪/时间感知、QQ 表情转换、Edge TTS 语音输出和持久关系阶段均已安装并加载。AstrBot 使用仓库内可复现的定制镜像。统一 MCP 工具层已加入，以互补的四个来源覆盖韩国公开资料、Naver、中国电商及全球商品搜索；只读边界和启用条件见 [`mcp/README.md`](mcp/README.md)。最新实测状态以 [`HANDOFF.md`](HANDOFF.md) 为准；下方早期规划仅保留为设计记录。**
 
 本仓库目录：`C:\Users\sanalover\Documents\Codex\2026-10-26.__codex_migrated__\new-chat-2\work\dafeiyu-girlfriend-qq`
 （以下称"本项目目录"）。项目所有产出只能写在这里。
